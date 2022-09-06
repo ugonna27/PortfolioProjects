@@ -1,0 +1,30 @@
+
+
+Select
+emp_no,
+birth_date,
+AgeGroupin,
+count(AgeGroupin) As AgeGroupCount
+from
+(
+Select
+emp_no,
+birth_date,
+hire_date,
+--current_salary,
+DATEDIFF(yy, birth_date, GETDATE()) as dagediff,
+case
+when DATEDIFF(yy, birth_date, GETDATE()) < 30 then 'less than 30yrs'
+when DATEDIFF(yy, birth_date, GETDATE()) between 30 and 39 then '30-39 yrs'
+when DATEDIFF(yy, birth_date, GETDATE()) between 40 and 49 then '40-49 yrs'
+when DATEDIFF(yy, birth_date, GETDATE()) between 50 and 59 then '50-59 yrs'
+when DATEDIFF(yy, birth_date, GETDATE()) between 60 and 65 then '60-65 years'
+else '60 yrs and above'
+end as AgeGroupin
+
+From Human_Resources.dbo.Employees 
+Where hire_date between '2010-01-01' and '2010-01-10') as hr
+Group by
+emp_no,
+birth_date,
+AgeGroupin
